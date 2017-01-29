@@ -1,0 +1,14 @@
+app_homepage:
+  path: /
+  defaults: { _controller: NewAppBundle:Default:index }
+
+propelsoa:
+  resource: "@PropelSOABundle/Resources/config/routing.yml"
+  prefix: /public
+
+newapp_newapp:
+    resource: "@NewAppBundle/Resources/config/routing.yml"
+    prefix:   /newapp
+public_newapp_newapp:
+    resource: "@NewAppBundle/Resources/config/publicrouting.yml"
+    prefix:   /public/newapp

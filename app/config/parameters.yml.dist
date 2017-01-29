@@ -1,0 +1,37 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: newapp
+    database_user: newapp
+    database_password: newapp
+    database_driver: pdo_mysql
+    database_path: null
+
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: ~
+    mailer_password: ~
+
+    secret: ThisTokenIsNotSoSecretChangeIt
+    locale: en
+
+
+    application_name: NewApplication
+    notification_from: info@newapp.com
+    notification_signature_location_text: 'EngineBundle:EmailNotification:genericSignature.text.twig'
+    notification_signature_location_html: 'EngineBundle:EmailNotification:genericSignature.html.twig'
+    app_company_name: '3rd Engine'
+    app_company_address: '906 Clint Smith Dr'
+    app_company_city: Duncanville
+    app_company_state: TX
+    app_company_zip: 75137
+    app_company_phone: ' '
+    app_company_fax: ' '
+    mongo_host: localhost
+    mongo_name: newapp
+    mongo_user: newapp
+    mongo_password: newapp
+    app_billing_email: services@3rdengine.com

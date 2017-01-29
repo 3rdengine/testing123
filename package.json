@@ -1,0 +1,27 @@
+{
+  "name": "engine",
+  "description": "A solution for quickly creating a deploying angular applications with a restful Symfony backend",
+  "author": "Third Engine Software",
+  "dependencies": {},
+  "devDependencies": {
+    "gifsicle": "0.1.4",
+    "grunt": "1.0.x",
+    "grunt-angular-templates": "0.5.x",
+    "grunt-bower-task": "0.4.x",
+    "grunt-concurrent": "^2.3.1",
+    "grunt-contrib-clean": "0.5.x",
+    "grunt-contrib-copy": "0.5.x",
+    "grunt-contrib-cssmin": "0.5.x",
+    "grunt-contrib-imagemin": "1.0.x",
+    "grunt-contrib-jshint": "1.0.x",
+    "grunt-contrib-less": "0.11.x",
+    "grunt-contrib-requirejs": "1.0.x",
+    "grunt-contrib-watch": "1.0.x",
+    "grunt-shell": "^2.1.0",
+    "jasmine-spec-reporter": "^2.7.0",
+    "load-grunt-tasks": "0.4.x",
+    "mysql": "^2.11.1",
+    "optipng-bin": "0.3.1",
+    "time-grunt": "^1.4.0"
+  }
+}

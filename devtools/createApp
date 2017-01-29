@@ -1,0 +1,94 @@
+#!/bin/bash
+function pause {
+	echo
+	echo -n Press Enter to continue...
+	read A
+}
+if [[ ! -f "app/AppKernel.php" ]] 
+then
+	echo "This command must be run in the project root directory."
+	exit;
+fi
+echo -n "New App/Repository Name (UseCamelCasePlease)?> "
+read SITE
+
+
+SITELC=`echo $SITE|tr '[:upper:]' '[:lower:]'`
+if grep newapp ./.git/config
+then
+ 	# We need to connect to the new repo
+ 	rm -rf .git
+ 	echo Removing connection to old repo
+ 	echo Creating new repo
+ 	git init && git add .
+ 	git rm --cached -r src/Templates && git commit -m "Initial repository creation from newapp templates"
+ 	echo Added all files to new repo
+ 	pause
+ 	git remote add origin git@github.com:3rdengine/${SITELC}
+ 	echo Adding remote to github
+ 	pause
+ 	git push -u origin master
+ 	echo Pushing to remote origin
+ 	pause
+ 	echo Adding Engine submodule
+ 	git submodule add git@github.com:3rdengine/engine src/Engine
+fi
+
+# app/config changes
+  cp app/config/parameters.yml.dist app/config/parameters.yml
+  sed -i -e "s/newapp/${SITELC}/g" app/config/parameters.yml
+
+
+
+echo "Creating $SITE Bundle Directories src/$SITE/${SITE}Bundle"
+if [[ ! -d "src/$SITE" ]]
+then
+  mkdir src/$SITE
+fi
+if [[ ! -d "src/${SITE}Bundle" ]]
+then
+  mkdir src/$SITE/${SITE}Bundle
+fi
+cp -R src/Templates/* src/$SITE/${SITE}Bundle
+cd src/$SITE/${SITE}Bundle
+for f in `find ./ -name "*NewApp*"`
+do
+	mv "$f" "`echo $f|sed s/NewApp/${SITE}/`";
+done
+for f in `find ./ -type f`
+do
+	sed -i -e "s/NewApp/${SITE}/g" $f
+	sed -i -e "s/newapp/${SITELC}/g" $f
+done
+cd -
+cd web/app
+for f in `find ./ -type f`
+do
+	sed -i -e "s/NewApp/${SITE}/g" $f
+	sed -i -e "s/newapp/${SITELC}/g" $f
+done
+cd -
+sed -i -e "s/NewApp/${SITE}/g" app/AppKernel.php
+sed -i -e "s/NewApp/${SITE}/g" app/config/routing.yml
+sed -i -e "s/newapp/${SITELC}/g" app/config/routing.yml
+sed -i -e "s/newapp/${SITELC}/g" Gruntfile.js
+sed -i -e "s/newapp/${SITELC}/g" phinx_*.yml
+rm -rf src/Templates
+mv web/app/newapp web/app/${SITELC}
+if [[ -d /var/app ]]
+then
+  ln -s `pwd` /var/app/${SITELC}
+fi
+
+# Composer ...
+  sudo chmod -R a+w app/cache/ app/logs/
+  composer install
+  npm install
+  bower install
+  grunt dev
+  echo "Before continuing, please ensure that apache conf has been set up, and that mysql db has been created and exists with username and password matching the lowercase site-name you specified (${SITELC})."
+  pause
+  sudo apache2ctl graceful
+  sudo chmod -R a+w app/cache/ app/logs/
+  app/console engine:updateall http://${SITELC}.local/app_dev.php src/Engine/EngineBundle/Resources/public/engApp/services/propelsoa
+  grunt dev
